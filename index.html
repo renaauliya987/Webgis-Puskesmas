@@ -1,0 +1,121 @@
+```html id="q4t8mx"
+<!DOCTYPE html>
+<html lang="id">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Persebaran Puskesmas di Bandar Lampung</title>
+
+<!-- LEAFLET -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+
+<!-- FONT -->
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+<!-- SIDEBAR -->
+<div class="sidebar">
+
+    <img src="foto.jpg" alt="Foto Mahasiswa">
+
+    <h1>🩺 Persebaran Puskesmas <br> di Bandar Lampung</h1>
+
+    <div class="profile">
+
+        <p>👤 <b>Nama :</b> Rena Auliya</p> 
+
+        <p>🆔 <b>NPM :</b> 2313034058</p>
+
+        <p>🎓 <b>Prodi :</b> Pendidikan Geografi</p>
+
+        <p>🏫 <b>Fakultas :</b> Fakultas Keguruan dan Ilmu Pendidikan</p>
+
+        <p>🌸 <b>Universitas :</b> Universitas Lampung</p>
+
+        <p>🧠 <b>MBTI :</b> ISFJ</p>
+
+        <p>🎧 <b>Favorite Things :</b> Music, K-Pop, K-Drama, Coffee</p>
+
+        <p>💌 <b>Bio :</b> just a girl trying to romanticize her life 🎀</p>
+
+        <p>🎵 <b>Now Playing :</b> “you’re on your own kid...”</p>
+
+    </div>
+
+</div>
+
+<!-- MAP -->
+<div id="map"></div>
+
+<!-- LEAFLET JS -->
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+<script>
+
+// MEMBUAT MAP
+var map = L.map('map').setView([-5.45, 105.26], 11);
+
+// BASEMAP
+L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; OpenStreetMap'
+}).addTo(map);
+
+// MEMBACA GEOJSON
+fetch('UPT_PUSKESMAS_JSON.geojson')
+
+.then(response => response.json())
+
+.then(data => {
+
+    // MENAMPILKAN GEOJSON
+    L.geoJSON(data, {
+
+        // ICON PUSKESMAS
+        pointToLayer: function(feature, latlng){
+
+            return L.marker(latlng, {
+
+                icon: L.divIcon({
+                    className: 'custom-icon',
+                    html: '🏥',
+                    iconSize: [60,60]
+                })
+
+            });
+
+        },
+
+        // POPUP DATA
+        onEachFeature: function(feature, layer){
+
+            let popupContent = "";
+
+            for(let key in feature.properties){
+
+                popupContent +=
+                "<b>" + key + "</b>: "
+                + feature.properties[key]
+                + "<br>";
+
+            }
+
+            layer.bindPopup(popupContent);
+
+        }
+
+    }).addTo(map);
+
+});
+
+</script>
+
+</body>
+</html>
+```
